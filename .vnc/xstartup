@@ -46,5 +46,8 @@ if [ -e /usr/bin/xbindkeys ]; then
 	xbindkeys -f ~/.xbindkeysrc &
 fi
 
+[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
+
+
 bspwm &
 
