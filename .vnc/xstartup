@@ -41,24 +41,10 @@ sleep .5
 [ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
 xsetroot -solid grey
 
-gnome-settings-daemon &
-sleep .5
-
-gnome-panel &
-sleep .5
-
-metacity &
-sleep .5
-
 # key bind daemon start
 if [ -e /usr/bin/xbindkeys ]; then
 	xbindkeys -f ~/.xbindkeysrc &
 fi
 
-nautilus &
-gnome-terminal &
-
-#xterm &
-
-#bspwm &
+bspwm &
 
