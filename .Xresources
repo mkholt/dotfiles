@@ -50,7 +50,7 @@ Xft.rgba:	rgb
 ! other
 URxvt*depth	    : 32
 *.cursorBlink       : 1
-*.font              : xft:cherry:pixelsize=13
+*.font              : xft:FiraCode:pixelsize=13
 *.letterSpace       : 1
 *.scrollBar         : false
 *.internalBorder    : 15
