@@ -53,7 +53,7 @@ Xft.rgba:	rgb
 ! other
 URxvt*depth	    : 32
 *.cursorBlink       : 1
-*.font              : xft:FiraCode:pixelsize=13
+URxvt.font          : xft:FiraCode:pixelsize=13
 rofi.font	    : Fira Code 12
 *.letterSpace       : 1
 URxvt*.scrollBar         : false
