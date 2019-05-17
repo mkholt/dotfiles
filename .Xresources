@@ -8,51 +8,56 @@ Xft.hintstyle:	hintfull
 Xft.lcdfilter:	lcdd
 Xft.rgba:	rgb
 
+#define nord0 #2E3440
+#define nord1 #3B4252
+#define nord2 #434C5E
+#define nord3 #4C566A
+#define nord4 #D8DEE9
+#define nord5 #E5E9F0
+#define nord6 #ECEFF4
+#define nord7 #8FBCBB
+#define nord8 #88C0D0
+#define nord9 #81A1C1
+#define nord10 #5E81AC
+#define nord11 #BF616A
+#define nord12 #D08770
+#define nord13 #EBCB8B
+#define nord14 #A3BE8C
+#define nord15 #B48EAD
 
 ! special
-*.foreground:   #ABB2BF
-*.background:   #030303
-*.cursorColor:  #5C6370
-*.highlightColor:#3A3F4B
+*.foreground:   nord4
+*.background:   nord0
+*.cursorColor:  nord4
+*.highlightColor: nord11
+*fading: 35
+*fadeColor: nord3
 
-! black
-*.color0:       #0e0e16
-*.color8:       #1c1c2d
-
-! red
-*.color1:       #e9546b
-*.color9:       #dc6a7d
-
-! green
-*.color2:       #c5c7bf
-*.color10:      #c5c7bf
-
-! yellow
-*.color3:       #d4c96c
-*.color11:      #c7dc97
-
-! blue
-*.color4:       #8099e2
-*.color12:      #99bad2
-
-! magenta
-*.color5:       #aa6ebc
-*.color13:      #c79bd6
-
-! cyan
-*.color6:       #80e9d4
-*.color14:      #97f3e0
-
-! white
-*.color7:       #8a9aa9
-*.color15:      #c4c4c4
+*.color0: nord1
+*.color1: nord11
+*.color2: nord14
+*.color3: nord13
+*.color4: nord9
+*.color5: nord15
+*.color6: nord8
+*.color7: nord5
+*.color8: nord3
+*.color9: nord11
+*.color10: nord14
+*.color11: nord13
+*.color12: nord9
+*.color13: nord15
+*.color14: nord7
+*.color15: nord6
 
 ! other
 URxvt*depth	    : 32
 *.cursorBlink       : 1
 *.font              : xft:FiraCode:pixelsize=13
+rofi.font	    : Fira Code 12
 *.letterSpace       : 1
-*.scrollBar         : false
+URxvt*.scrollBar         : false
 *.internalBorder    : 15
 *.cursorUnderline   : true
 *.geometry          : 65x10
+

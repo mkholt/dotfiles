@@ -1,9 +1,14 @@
 #! /bin/sh
 
+# Get colors
+focusColor=$(xrdb -query -all | grep '*.highlightColor:' | sed "s/\*.highlightColor:\t//")
+foreground=$(xrdb -query -all | grep '*.foreground:' | sed "s/\*.foreground:\t//")
+
 # Kill all running applications before starting
 killall -9 sxhkd lemonbar
 
 sxhkd &
+~/.config/bspwm/lemonbar.sh &
 
 xsetroot -cursor_name left_ptr &
 
@@ -16,8 +21,8 @@ bspc config split_ratio           0.52
 bspc config borderless_monocle    false
 bspc config gapless_monocle       true
 bspc config focus_follows_pointer true
-bspc config normal_border_color   "#767676"
-bspc config focused_border_color  "#bfc7d5"
+bspc config normal_border_color   ${foreground}
+bspc config focused_border_color  ${focusColor}
 
 bspc config bottom_padding        10
 bspc config top_padding           10
