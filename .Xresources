@@ -26,12 +26,11 @@ Xft.rgba:	rgb
 #define nord15 #B48EAD
 
 ! special
-*.foreground:   nord4
-*.background:   nord0
-*.cursorColor:  nord4
+*.foreground:     nord4
+*.background:     nord0
+*.cursorColor:    nord4
 *.highlightColor: nord11
-*fading: 35
-*fadeColor: nord3
+*fadeColor:       nord3
 
 *.color0: nord1
 *.color1: nord11
@@ -52,11 +51,13 @@ Xft.rgba:	rgb
 
 ! other
 URxvt*depth	    : 32
-*.cursorBlink       : 1
 URxvt.font          : xft:FiraCode:pixelsize=13
+URxvt*.scrollBar    : false
 rofi.font	    : Fira Code 12
+
+*fading             : 35
+*.cursorBlink       : 1
 *.letterSpace       : 1
-URxvt*.scrollBar         : false
 *.internalBorder    : 15
 *.cursorUnderline   : true
 *.geometry          : 65x10
