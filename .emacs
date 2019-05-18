@@ -1,6 +1,9 @@
 ;; Bind mark region, since C-SPC is bound by Samsung
 (global-set-key (kbd "M-SPC") 'set-mark-command)
 
+;; Bind M-9 to delete line
+(global-set-key (kbd "M-9") 'kill-whole-line)
+
 ;; Delete the selected region when pressing the DEL key
 (delete-selection-mode t)
 
