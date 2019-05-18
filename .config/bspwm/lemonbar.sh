@@ -1,5 +1,7 @@
 #!/bin/bash
 
+killall -9 lemonbar
+
 color0=$(xrdb -query -all | grep "*.color0" | sed "s/\*.color0:\t//")
 color7=$(xrdb -query -all | grep "*.color7" | sed "s/\*.color7:\t//")
 

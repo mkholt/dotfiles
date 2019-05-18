@@ -1,85 +1,82 @@
 #!/bin/bash
 
+source lemonfunctions.sh
+
+function buildStream() {
+    while true
+    do
+	echo "K$(keyboardLayout)"
+	echo "B$(batteryStatus)"
+	echo "D$(getDate)"
+	echo "C$(getTime)"
+	sleep 1s
+    done
+}
+
+# Define separators and colors
 lefthard=""
 leftsoft=""
 righthard=""
 rightsoft=""
-color0=""
-color1=""
-color2=""
-color3=""
-color4=""
-color5=""
-color6=""
-color7=""
-color8=""
+color0=$(getColor color0)
+color1=$(getColor color1)
+color2=$(getColor color2)
+color3=$(getColor color3)
+color4=$(getColor color4)
+color5=$(getColor color5)
+color6=$(getColor color6)
+color7=$(getColor color7)
+color8=$(getColor color8)
 
-function setColors() {
-    color0=$(xrdb -query -all | grep "*.color0:" | sed "s/\*.color0:\t//")
-    color1=$(xrdb -query -all | grep "*.color1:" | sed "s/\*.color1:\t//")
-    color2=$(xrdb -query -all | grep "*.color2:" | sed "s/\*.color2:\t//")
-    color3=$(xrdb -query -all | grep "*.color3:" | sed "s/\*.color3:\t//")
-    color4=$(xrdb -query -all | grep "*.color4:" | sed "s/\*.color4:\t//")
-    color5=$(xrdb -query -all | grep "*.color5:" | sed "s/\*.color5:\t//")
-    color6=$(xrdb -query -all | grep "*.color6:" | sed "s/\*.color6:\t//")
-    color7=$(xrdb -query -all | grep "*.color7:" | sed "s/\*.color7:\t//")
-    color8=$(xrdb -query -all | grep "*.color8:" | sed "s/\*.color8:\t//")
-}
+# Remove any existing pipe
+fifo='/tmp/panel.fifo'
+[ -e "$fifo" ] && rm "$fifo"
 
-function getWorkspaces() {
-    wrkspc=$(i3-msg -t get_workspaces | jq '.[].name' | sed s/\"// | sed s/\"//)
-    echo -n "%{A5:i3-msg -q workspace next:}%{A4:i3-msg -q workspace prev:}"
-    for i in $wrkspc ; do
-	focused=$(i3-msg -t get_workspaces | jq ".[] | select(.name==\"$i\").focused")
-	urgent=$(i3-msg -t get_workspaces | jq ".[] | select(.name==\"$i\").urgent")
-	if $focused ; then
-	    echo -n "%{B$color4 F$color7} $i %{B$color0 F$color7}"
-	else
-	    if $urgent ; then
-		echo -n "%{B$color7 F$color0}"
-                echo -n "%{A:i3-msg -q workspace number $i:} $i %{A}"
-                echo -n "%{B$color0 F$color7}"
-	    else
-		echo -n "%{B$color0 F$color4}"
-                echo -n "%{A:"i3-msg -q workspace number $i":} $i %{A}"
-                echo -n "%{B$color0 F$color7}"
-	    fi
-	fi
+# Create FIFO pipe
+mkfifo "$fifo"
+
+# Pipe the output, and bspwm status to FIFO
+buildStream > "$fifo" &
+bspc subscribe report > "$fifo" &
+
+# Listen for window title changes, and pipe to FIFO
+xtitle -sf "T%{F$color1}%s\n" -t 100 > "$fifo" &
+
+function panel() {
+    while read -r line
+    do
+	case $line in
+	    T*)
+		# Window Title
+		title="${line#?}"
+		;;
+	    D*)
+		# Date
+		date="${line#?}"
+		;;
+	    C*)
+		# Time
+		time="${line#?}"
+		;;
+	    K*)
+		# Keyboard layout
+		kbd="${line#?}"
+		;;
+	    B*)
+		# Battery level
+		bat="${line#?}"
+		;;
+	    W*)
+		# bspwm's state
+		wm=$(getWorkspaces ${line#?})
+	esac
+
+	function panel_layout() {
+	    echo "%{l}$wm%{c}$title%{r}$bat $date $time "
+	}
+
+	printf "%s%s%s\n" "%{B$color0 F$color7}" "$(panel_layout)" "%{B$color0 F$color7}"
     done
-    echo -n "%{A}%{A}%{r}"
 }
 
-function batteryStatus() {
-    pct=$(cat ~/share/battery | cut -d' ' -f 1)
-    state=$(cat ~/share/battery | cut -d' ' -f 2)
-    if [ $state = "discharging" ]; then
-	echo -n "%{F$color7}$righthard%{B$color0 R}"
-    else
-	echo -n "%{F$color2}$righthard%{B$color0 R}"
-    fi
-    echo -n " BAT: $pct"
-    echo -n " %{F$color4}$righthard%{R}%{F$color0 B$color4}"
-}
-
-function showDateTime() {
-    echo -n " $(date +%Y-%m-%d) "
-    echo -n "%{F$color2}${righthard}%{B$color0}%{R}"
-    echo -n " $(date +%H:%M:%S)"
-}
-
-function windowTitle() {
-    xtitle
-}
-
-while true
-do 
-    setColors
-
-    BATTERY=$(batteryStatus)
-    DATETIME=$(showDateTime)
-    TITLE=$(windowTitle)
-    
-    echo " %{B$color0 F$color7}WORKSPACES%{c}${TITLE}%{r}${BATTERY} ${DATETIME} %{B$color0 F$color7}"
-    
-    wait
-done
+panel < "$fifo"
