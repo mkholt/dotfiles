@@ -8,7 +8,7 @@ foreground=$(xrdb -query -all | grep '*.foreground:' | sed "s/\*.foreground:\t//
 killall -9 sxhkd lemonbar
 
 sxhkd &
-~/.config/bspwm/lemonbar.sh &
+~/.config/bar/lemonbar.sh &
 
 xsetroot -cursor_name left_ptr &
 

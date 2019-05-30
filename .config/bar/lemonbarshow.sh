@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source lemonfunctions.sh
+source ~/.config/bar/lemonfunctions.sh
 
 function buildStream() {
     while true
